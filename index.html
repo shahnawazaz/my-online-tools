@@ -3,114 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>My Online Tools</title>
+
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: Arial, sans-serif;
       background: #f5f7fb;
       color: #222;
-      text-align: center;
     }
 
     header {
       background: #111827;
       color: white;
       padding: 25px 15px;
+      text-align: center;
     }
 
-    h1 {
-      margin: 0 0 10px;
+    header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 15px;
+      color: #d1d5db;
     }
 
     .container {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 20px;
+      width: 92%;
+      max-width: 1100px;
+      margin: 25px auto;
     }
 
-    .box {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    .welcome {
+      text-align: center;
+      margin-bottom: 25px;
     }
 
-    input {
-      width: 90%;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin: 15px 0;
-      font-size: 16px;
+    .welcome h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
     }
 
-    button {
-      padding: 14px 25px;
-      border: none;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
+    .welcome p {
+      color: #666;
+      line-height: 1.6;
     }
 
     .tools {
-      margin-top: 30px;
       display: grid;
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
     }
 
-    .tool {
+    .tool-card {
       background: white;
-      padding: 18px;
-      border-radius: 10px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+      padding: 25px 18px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: 0.2s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .tool-card h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .tool-card p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .tool-card button {
+      border: none;
+      background: #111827;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .tool-card button:hover {
+      background: #2563eb;
     }
 
     footer {
-      margin-top: 50px;
-      padding: 20px;
-      color: #666;
+      margin-top: 40px;
+      background: #111827;
+      color: #d1d5db;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 25px;
+      }
+
+      .welcome h2 {
+        font-size: 22px;
+      }
+
+      .tools {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <h1>My Online Tools</h1>
-  <p>Simple tools for everyday digital tasks</p>
-</header>
+  <header>
+    <h1>My Online Tools</h1>
+    <p>Simple, Fast & Useful Online Tools</p>
+  </header>
 
-<div class="container">
+  <div class="container">
 
-  <div class="box">
-    <h2>Useful Online Tools</h2>
-    <p>Paste a permitted media URL below to process it.</p>
+    <div class="welcome">
+      <h2>All Your Online Tools in One Place</h2>
+      <p>
+        Use simple and useful tools for images, documents, videos,
+        audio and everyday digital tasks.
+      </p>
+    </div>
 
-    <input type="url" placeholder="Paste your URL here">
+    <div class="tools">
 
-    <br>
+      <div class="tool-card">
+        <div class="icon">🖼️</div>
+        <h3>Image Tools</h3>
+        <p>Resize, compress and manage your images easily.</p>
+        <button onclick="comingSoon('Image Tools')">Open Tool</button>
+      </div>
 
-    <button onclick="alert('Tool coming soon!')">
-      Process
-    </button>
+      <div class="tool-card">
+        <div class="icon">📄</div>
+        <h3>PDF Tools</h3>
+        <p>Useful PDF tools for your everyday document needs.</p>
+        <button onclick="comingSoon('PDF Tools')">Open Tool</button>
+      </div>
+
+      <div class="tool-card">
+        <div class="icon">🎬</div>
+        <h3>Video Tools</h3>
+        <p>Simple tools for working with video files.</p>
+        <button onclick="comingSoon('Video Tools')">Open Tool</button>
+      </div>
+
+      <div class="tool-card">
+        <div class="icon">🎵</div>
+        <h3>Audio Tools</h3>
+        <p>Useful tools for common audio tasks.</p>
+        <button onclick="comingSoon('Audio Tools')">Open Tool</button>
+      </div>
+
+      <div class="tool-card">
+        <div class="icon">📝</div>
+        <h3>Text Tools</h3>
+        <p>Helpful tools for text formatting and editing.</p>
+        <button onclick="comingSoon('Text Tools')">Open Tool</button>
+      </div>
+
+      <div class="tool-card">
+        <div class="icon">📁</div>
+        <h3>Document Tools</h3>
+        <p>Work with common document files quickly and easily.</p>
+        <button onclick="comingSoon('Document Tools')">Open Tool</button>
+      </div>
+
+    </div>
   </div>
 
-  <div class="tools">
-    <div class="tool">🖼️ Image Tools</div>
-    <div class="tool">📄 PDF Tools</div>
-    <div class="tool">🎬 Video Tools</div>
-    <div class="tool">🎵 Audio Tools</div>
-    <div class="tool">🔳 QR Code Generator</div>
-  </div>
+  <footer>
+    © 2026 My Online Tools — All Rights Reserved
+  </footer>
 
-</div>
-
-<footer>
-  © 2026 My Online Tools. All rights reserved.
-</footer>
+  <script>
+    function comingSoon(tool) {
+      alert(tool + " is coming soon!");
+    }
+  </script>
 
 </body>
-      </html>
+</html>
