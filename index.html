@@ -1,210 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Online Tools</title>
 
-  <title>My Online Tools</title>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #222;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #222;
-    }
+header {
+  background: #111827;
+  color: white;
+  text-align: center;
+  padding: 28px 15px;
+}
 
-    header {
-      background: #111827;
-      color: white;
-      padding: 25px 15px;
-      text-align: center;
-    }
+header h1 {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
 
-    header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
+header p {
+  color: #d1d5db;
+}
 
-    header p {
-      font-size: 15px;
-      color: #d1d5db;
-    }
+.container {
+  width: 92%;
+  max-width: 1000px;
+  margin: 25px auto;
+}
 
-    .container {
-      width: 92%;
-      max-width: 1100px;
-      margin: 25px auto;
-    }
+.welcome {
+  text-align: center;
+  margin-bottom: 25px;
+}
 
-    .welcome {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+.welcome h2 {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
 
-    .welcome h2 {
-      font-size: 25px;
-      margin-bottom: 8px;
-    }
+.welcome p {
+  color: #666;
+  line-height: 1.6;
+}
 
-    .welcome p {
-      color: #666;
-      line-height: 1.6;
-    }
+.tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
 
-    .tools {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-    }
+.card {
+  background: white;
+  padding: 25px 18px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-    .tool-card {
-      background: white;
-      padding: 25px 18px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      transition: 0.2s;
-    }
+.icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
 
-    .tool-card:hover {
-      transform: translateY(-4px);
-    }
+.card h3 {
+  margin-bottom: 8px;
+}
 
-    .icon {
-      font-size: 42px;
-      margin-bottom: 12px;
-    }
+.card p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
 
-    .tool-card h3 {
-      margin-bottom: 8px;
-      font-size: 20px;
-    }
+button {
+  border: none;
+  background: #111827;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-    .tool-card p {
-      color: #666;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
+button:hover {
+  background: #2563eb;
+}
 
-    .tool-card button {
-      border: none;
-      background: #111827;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
+#imageTool {
+  display: none;
+  background: white;
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-    .tool-card button:hover {
-      background: #2563eb;
-    }
+#imageTool h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    footer {
-      margin-top: 40px;
-      background: #111827;
-      color: #d1d5db;
-      text-align: center;
-      padding: 20px 10px;
-      font-size: 14px;
-    }
+.upload-box {
+  border: 2px dashed #9ca3af;
+  padding: 25px;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 25px;
-      }
+input[type="file"] {
+  width: 100%;
+  margin-top: 12px;
+}
 
-      .welcome h2 {
-        font-size: 22px;
-      }
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+}
 
-      .tools {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.control label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.control input,
+.control select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  width: 100%;
+}
+
+.preview {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.preview img {
+  max-width: 100%;
+  max-height: 350px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.info {
+  text-align: center;
+  color: #666;
+  margin: 10px 0;
+}
+
+.actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.download {
+  background: #16a34a;
+  display: none;
+  margin-left: 8px;
+}
+
+.close {
+  background: #dc2626;
+  margin-top: 15px;
+}
+
+footer {
+  margin-top: 40px;
+  background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 20px;
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 25px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .tools {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>My Online Tools</h1>
-    <p>Simple, Fast & Useful Online Tools</p>
-  </header>
+<header>
+  <h1>My Online Tools</h1>
+  <p>Simple, Fast & Useful Online Tools</p>
+</header>
 
-  <div class="container">
+<div class="container">
 
-    <div class="welcome">
-      <h2>All Your Online Tools in One Place</h2>
-      <p>
-        Use simple and useful tools for images, documents, videos,
-        audio and everyday digital tasks.
-      </p>
-    </div>
-
-    <div class="tools">
-
-      <div class="tool-card">
-        <div class="icon">🖼️</div>
-        <h3>Image Tools</h3>
-        <p>Resize, compress and manage your images easily.</p>
-        <button onclick="comingSoon('Image Tools')">Open Tool</button>
-      </div>
-
-      <div class="tool-card">
-        <div class="icon">📄</div>
-        <h3>PDF Tools</h3>
-        <p>Useful PDF tools for your everyday document needs.</p>
-        <button onclick="comingSoon('PDF Tools')">Open Tool</button>
-      </div>
-
-      <div class="tool-card">
-        <div class="icon">🎬</div>
-        <h3>Video Tools</h3>
-        <p>Simple tools for working with video files.</p>
-        <button onclick="comingSoon('Video Tools')">Open Tool</button>
-      </div>
-
-      <div class="tool-card">
-        <div class="icon">🎵</div>
-        <h3>Audio Tools</h3>
-        <p>Useful tools for common audio tasks.</p>
-        <button onclick="comingSoon('Audio Tools')">Open Tool</button>
-      </div>
-
-      <div class="tool-card">
-        <div class="icon">📝</div>
-        <h3>Text Tools</h3>
-        <p>Helpful tools for text formatting and editing.</p>
-        <button onclick="comingSoon('Text Tools')">Open Tool</button>
-      </div>
-
-      <div class="tool-card">
-        <div class="icon">📁</div>
-        <h3>Document Tools</h3>
-        <p>Work with common document files quickly and easily.</p>
-        <button onclick="comingSoon('Document Tools')">Open Tool</button>
-      </div>
-
-    </div>
+  <div class="welcome">
+    <h2>All Your Online Tools in One Place</h2>
+    <p>
+      Useful tools for images, PDF, video, audio, text and documents.
+    </p>
   </div>
 
-  <footer>
-    © 2026 My Online Tools — All Rights Reserved
-  </footer>
+  <div class="tools">
 
-  <script>
-    function comingSoon(tool) {
-      alert(tool + " is coming soon!");
+    <div class="card">
+      <div class="icon">🖼️</div>
+      <h3>Image Tools</h3>
+      <p>Resize and compress your images easily.</p>
+      <button onclick="openImageTool()">Open Tool</button>
+    </div>
+
+    <div class="card">
+      <div class="icon">📄</div>
+      <h3>PDF Tools</h3>
+      <p>Useful tools for PDF documents.</p>
+      <button onclick="comingSoon('PDF Tools')">Open Tool</button>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎬</div>
+      <h3>Video Tools</h3>
+      <p>Simple tools for video files.</p>
+      <button onclick="comingSoon('Video Tools')">Open Tool</button>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎵</div>
+      <h3>Audio Tools</h3>
+      <p>Useful tools for audio files.</p>
+      <button onclick="comingSoon('Audio Tools')">Open Tool</button>
+    </div>
+
+    <div class="card">
+      <div class="icon">📝</div>
+      <h3>Text Tools</h3>
+      <p>Helpful tools for text editing.</p>
+      <button onclick="comingSoon('Text Tools')">Open Tool</button>
+    </div>
+
+    <div class="card">
+      <div class="icon">📁</div>
+      <h3>Document Tools</h3>
+      <p>Work with common document files.</p>
+      <button onclick="comingSoon('Document Tools')">Open Tool</button>
+    </div>
+
+  </div>
+
+  <section id="imageTool">
+
+    <h2>🖼️ Image Resize & Compress</h2>
+
+    <div class="upload-box">
+      <strong>Select an image from your phone</strong>
+      <input type="file" id="imageInput" accept="image/*">
+    </div>
+
+    <div class="controls">
+
+      <div class="control">
+        <label>Width (px)</label>
+        <input type="number" id="widthInput" placeholder="Auto">
+      </div>
+
+      <div class="control">
+        <label>Height (px)</label>
+        <input type="number" id="heightInput" placeholder="Auto">
+      </div>
+
+      <div class="control">
+        <label>Quality</label>
+        <input type="range" id="qualityInput" min="10" max="100" value="80"
+               oninput="qualityValue.innerText=this.value+'%'">
+        <span id="qualityValue">80%</span>
+      </div>
+
+      <div class="control">
+        <label>Format</label>
+        <select id="formatInput">
+          <option value="image/jpeg">JPG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WEBP</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="preview">
+      <img id="previewImage" alt="Preview">
+    </div>
+
+    <div class="info" id="imageInfo"></div>
+
+    <div class="actions">
+      <button onclick="processImage()">Resize & Compress</button>
+      <button class="download" id="downloadButton">Download Image</button>
+      <br>
+      <button class="close" onclick="closeImageTool()">Close Tool</button>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  © 2026 My Online Tools — All Rights Reserved
+</footer>
+
+<script>
+
+let selectedImage = null;
+
+const imageInput = document.getElementById("imageInput");
+const previewImage = document.getElementById("previewImage");
+const widthInput = document.getElementById("widthInput");
+const heightInput = document.getElementById("heightInput");
+const formatInput = document.getElementById("formatInput");
+const qualityInput = document.getElementById("qualityInput");
+const downloadButton = document.getElementById("downloadButton");
+const imageInfo = document.getElementById("imageInfo");
+
+function openImageTool() {
+  document.getElementById("imageTool").style.display = "block";
+  document.getElementById("imageTool").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function closeImageTool() {
+  document.getElementById("imageTool").style.display = "none";
+}
+
+function comingSoon(tool) {
+  alert(tool + " is coming soon!");
+}
+
+imageInput.addEventListener("change", function() {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image file.");
+    return;
+  }
+
+  selectedImage = new Image();
+
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+
+    selectedImage.onload = function() {
+
+      widthInput.value = selectedImage.width;
+      heightInput.value = selectedImage.height;
+
+      previewImage.src = event.target.result;
+
+      imageInfo.innerText =
+        "Original size: " +
+        selectedImage.width +
+        " × " +
+        selectedImage.height +
+        " px | " +
+        formatBytes(file.size);
+
+    };
+
+    selectedImage.src = event.target.result;
+  };
+
+  reader.readAsDataURL(file);
+
+  downloadButton.style.display = "none";
+});
+
+function formatBytes(bytes) {
+
+  if (bytes === 0) return "0 Bytes";
+
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+  return (
+    parseFloat((bytes / Math.pow(1024, i)).toFixed(2))
+    + " "
+    + sizes[i]
+  );
+}
+
+function processImage() {
+
+  if (!selectedImage) {
+    alert("Please select an image first.");
+    return;
+  }
+
+  let width = parseInt(widthInput.value);
+  let height = parseInt(heightInput.value);
+
+  if (!width || !height) {
+    alert("Please enter width and height.");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = width;
+  canvas.height = height;
+
+  ctx.drawImage(
+    selectedImage,
+    0,
+    0,
+    width,
+    height
+  );
+
+  const format = formatInput.value;
+  const quality = parseInt(qualityInput.value) / 100;
+
+  canvas.toBlob(function(blob) {
+
+    if (!blob) {
+      alert("Could not process image.");
+      return;
     }
-  </script>
+
+    const url = URL.createObjectURL(blob);
+
+    previewImage.src = url;
+
+    imageInfo.innerText =
+      "New size: " +
+      width +
+      " × " +
+      height +
+      " px | " +
+      formatBytes(blob.size);
+
+    downloadButton.style.display = "inline-block";
+
+    downloadButton.onclick = function() {
+
+      const link = document.createElement("a");
+
+      link.href = url;
+
+      let extension = "jpg";
+
+      if (format === "image/png") {
+        extension = "png";
+      }
+
+      if (format === "image/webp") {
+        extension = "webp";
+      }
+
+      link.download = "my-online-tools-image." + extension;
+
+      link.click();
+    };
+
+  }, format, quality);
+}
+
+</script>
 
 </body>
 </html>
