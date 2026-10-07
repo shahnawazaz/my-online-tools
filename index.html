@@ -346,7 +346,47 @@ Select a video to begin.
 </div>
 
 </section>
+<!-- AUDIO TOOL -->
 
+<section id="audioTool" class="tool">
+
+<h2>🎵 Audio Trim Tool</h2>
+
+<div class="upload-box">
+<strong>Select an audio file from your phone</strong>
+<input type="file" id="audioInput" accept="audio/*">
+</div>
+
+<div class="preview">
+<audio id="audioPreview" controls></audio>
+</div>
+
+<div class="controls">
+
+<div class="control">
+<label>Start Time (seconds)</label>
+<input type="number" id="audioStart" value="0" min="0" step="0.1">
+</div>
+
+<div class="control">
+<label>End Time (seconds)</label>
+<input type="number" id="audioEnd" value="10" min="0" step="0.1">
+</div>
+
+</div>
+
+<div class="info" id="audioInfo">
+Select an audio file to begin.
+</div>
+
+<div class="actions">
+<button onclick="trimAudio()">✂️ Trim Audio</button>
+<button class="download" id="audioDownload">Download Audio</button>
+<br>
+<button class="close" onclick="closeTool('audioTool')">Close Tool</button>
+</div>
+
+</section>
 </div>
 
 <footer>
@@ -354,7 +394,209 @@ Select a video to begin.
 </footer>
 
 <script>
+/* AUDIO TOOL */
 
+const audioInput = document.getElementById("audioInput");
+const audioPreview = document.getElementById("audioPreview");
+const audioStart = document.getElementById("audioStart");
+const audioEnd = document.getElementById("audioEnd");
+const audioInfo = document.getElementById("audioInfo");
+const audioDownload = document.getElementById("audioDownload");
+
+let selectedAudioFile = null;
+let selectedAudioURL = null;
+
+audioInput.addEventListener("change", function(){
+
+  const file = this.files[0];
+  if(!file) return;
+
+  if(!file.type.startsWith("audio/")){
+    alert("Please select an audio file.");
+    return;
+  }
+
+  selectedAudioFile = file;
+
+  if(selectedAudioURL){
+    URL.revokeObjectURL(selectedAudioURL);
+  }
+
+  selectedAudioURL = URL.createObjectURL(file);
+  audioPreview.src = selectedAudioURL;
+
+  audioPreview.onloadedmetadata = function(){
+
+    audioStart.value = 0;
+    audioEnd.value = audioPreview.duration.toFixed(1);
+
+    audioInfo.innerText =
+      "Audio duration: " +
+      audioPreview.duration.toFixed(1) +
+      " seconds | " +
+      formatBytes(file.size);
+  };
+
+  audioDownload.style.display = "none";
+});
+
+async function trimAudio(){
+
+  if(!selectedAudioFile){
+    alert("Please select an audio file first.");
+    return;
+  }
+
+  const start = parseFloat(audioStart.value);
+  const end = parseFloat(audioEnd.value);
+
+  if(isNaN(start) || isNaN(end) || start < 0 || end <= start){
+    alert("Please enter valid start and end times.");
+    return;
+  }
+
+  if(end > audioPreview.duration){
+    alert("End time is longer than the audio.");
+    return;
+  }
+
+  audioInfo.innerText = "Processing audio... Please wait.";
+
+  try{
+
+    const arrayBuffer = await selectedAudioFile.arrayBuffer();
+
+    const AudioContextClass =
+      window.AudioContext || window.webkitAudioContext;
+
+    const audioContext = new AudioContextClass();
+
+    const decoded = await audioContext.decodeAudioData(arrayBuffer);
+
+    const startSample = Math.floor(start * decoded.sampleRate);
+    const endSample = Math.floor(end * decoded.sampleRate);
+    const frameCount = endSample - startSample;
+
+    const offlineContext = new OfflineAudioContext(
+      decoded.numberOfChannels,
+      frameCount,
+      decoded.sampleRate
+    );
+
+    const trimmedBuffer = offlineContext.createBuffer(
+      decoded.numberOfChannels,
+      frameCount,
+      decoded.sampleRate
+    );
+
+    for(let channel = 0; channel < decoded.numberOfChannels; channel++){
+
+      const data = decoded.getChannelData(channel);
+
+      trimmedBuffer
+        .getChannelData(channel)
+        .set(data.slice(startSample, endSample));
+    }
+
+    const source = offlineContext.createBufferSource();
+    source.buffer = trimmedBuffer;
+    source.connect(offlineContext.destination);
+    source.start();
+
+    const renderedBuffer = await offlineContext.startRendering();
+
+    const wavBlob = audioBufferToWav(renderedBuffer);
+
+    const url = URL.createObjectURL(wavBlob);
+
+    audioInfo.innerText =
+      "Trimmed audio ready: " +
+      formatBytes(wavBlob.size);
+
+    audioDownload.style.display = "inline-block";
+
+    audioDownload.onclick = function(){
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "my-online-tools-audio.wav";
+      link.click();
+    };
+
+    await audioContext.close();
+
+  }catch(error){
+
+    console.error(error);
+
+    audioInfo.innerText = "Audio processing failed.";
+
+    alert(
+      "Could not process this audio file. Please try another audio file."
+    );
+  }
+}
+
+function audioBufferToWav(buffer){
+
+  const channels = buffer.numberOfChannels;
+  const sampleRate = buffer.sampleRate;
+  const length = buffer.length * channels * 2 + 44;
+
+  const arrayBuffer = new ArrayBuffer(length);
+  const view = new DataView(arrayBuffer);
+
+  writeString(view, 0, "RIFF");
+  view.setUint32(4, length - 8, true);
+  writeString(view, 8, "WAVE");
+
+  writeString(view, 12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * channels * 2, true);
+  view.setUint16(32, channels * 2, true);
+  view.setUint16(34, 16, true);
+
+  writeString(view, 36, "data");
+  view.setUint32(40, length - 44, true);
+
+  const channelData = [];
+
+  for(let channel = 0; channel < channels; channel++){
+    channelData.push(buffer.getChannelData(channel));
+  }
+
+  let offset = 44;
+
+  for(let i = 0; i < buffer.length; i++){
+
+    for(let channel = 0; channel < channels; channel++){
+
+      let sample = channelData[channel][i];
+
+      sample = Math.max(-1, Math.min(1, sample));
+
+      const value =
+        sample < 0
+          ? sample * 0x8000
+          : sample * 0x7FFF;
+
+      view.setInt16(offset, value, true);
+      offset += 2;
+    }
+  }
+
+  return new Blob([view], {type:"audio/wav"});
+}
+
+function writeString(view, offset, string){
+
+  for(let i = 0; i < string.length; i++){
+    view.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
 let selectedImage=null;
 let selectedVideoURL=null;
 
