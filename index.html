@@ -586,7 +586,7 @@ async function trimVideo(){
     };
   };
 
-  videoPreview.currentTime=start;
+  videoPreview.currentTime = start + 0.001;
 
   videoPreview.onseeked=function(){
 
