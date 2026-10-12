@@ -447,7 +447,7 @@ Close Tool
 <footer>
 © 2026 My Online Tools — All Rights Reserved
 </footer>
-
+<script src="https://unpkg.com/mammoth@1.9.0/mammoth.browser.min.js"></script>
 <script>
 /* AUDIO TOOL */
 /* PDF TOOL */
@@ -493,6 +493,87 @@ documentDownload.addEventListener("click", function() {
   link.click();
   link.remove();
 });
+  // DOCUMENT TEXT EXTRACTOR
+const documentTextOutput = document.createElement("textarea");
+documentTextOutput.id = "documentTextOutput";
+documentTextOutput.placeholder = "Extracted text will appear here...";
+documentTextOutput.style.width = "100%";
+documentTextOutput.style.minHeight = "150px";
+documentTextOutput.style.display = "block";
+documentTextOutput.style.marginTop = "12px";
+
+const extractTextButton = document.createElement("button");
+extractTextButton.textContent = "Extract Text";
+extractTextButton.style.marginTop = "10px";
+
+const copyTextButton = document.createElement("button");
+copyTextButton.textContent = "Copy Text";
+copyTextButton.style.marginTop = "10px";
+
+const downloadTextButton = document.createElement("button");
+downloadTextButton.textContent = "Download TXT";
+downloadTextButton.style.marginTop = "10px";
+
+document.getElementById("documentTool").append(
+  extractTextButton,
+  documentTextOutput,
+  copyTextButton,
+  downloadTextButton
+);
+
+extractTextButton.onclick = async function() {
+  if (!selectedDocument) {
+    alert("Please select a document first.");
+    return;
+  }
+
+  try {
+    if (selectedDocument.name.toLowerCase().endsWith(".txt")) {
+      documentTextOutput.value = await selectedDocument.text();
+    } else if (selectedDocument.name.toLowerCase().endsWith(".docx")) {
+      const buffer = await selectedDocument.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+      documentTextOutput.value = result.value;
+    } else {
+      alert("Text extraction supports .docx and .txt files only.");
+    }
+  } catch (error) {
+    alert("Could not extract text from this file.");
+  }
+};
+
+copyTextButton.onclick = async function() {
+  if (!documentTextOutput.value) {
+    alert("Extract text first.");
+    return;
+  }
+
+  documentTextOutput.select();
+  try {
+    await navigator.clipboard.writeText(documentTextOutput.value);
+    alert("Text copied!");
+  } catch (error) {
+    alert("Text is selected. Long-press it and choose Copy.");
+  }
+};
+
+downloadTextButton.onclick = function() {
+  if (!documentTextOutput.value) {
+    alert("Extract text first.");
+    return;
+  }
+
+  const blob = new Blob([documentTextOutput.value], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "extracted-text.txt";
+  link.click();
+  URL.revokeObjectURL(url);
+};
 const pdfInput = document.getElementById("pdfInput");
 const pdfInfo = document.getElementById("pdfInfo");
 const pdfDownload = document.getElementById("pdfDownload");
