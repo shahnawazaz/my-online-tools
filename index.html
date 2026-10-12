@@ -411,7 +411,36 @@ Select a PDF file to begin.
 </div>
 
 </section>
+<!-- DOCUMENT TOOL -->
 
+<section id="documentTool" class="tool">
+
+<h2>📄 Document Tool</h2>
+
+<div class="upload-box">
+<strong>Select a Word Document</strong>
+<input type="file" id="documentInput" accept=".doc,.docx,.txt">
+</div>
+
+<div class="info" id="documentInfo">
+Select a document to begin.
+</div>
+
+<div class="actions">
+
+<button class="download" id="documentDownload" style="display:none;">
+Download Original File
+</button>
+
+<br><br>
+
+<button class="close" onclick="closeTool('documentTool')">
+Close Tool
+</button>
+
+</div>
+
+</section>
 </div>
 </div>
 
@@ -422,7 +451,48 @@ Select a PDF file to begin.
 <script>
 /* AUDIO TOOL */
 /* PDF TOOL */
+/* DOCUMENT TOOL */
 
+const documentInput = document.getElementById("documentInput");
+const documentInfo = document.getElementById("documentInfo");
+const documentDownload = document.getElementById("documentDownload");
+
+let selectedDocument = null;
+let selectedDocumentURL = null;
+
+documentInput.addEventListener("change", function() {
+  const file = this.files[0];
+
+  if (!file) return;
+
+  selectedDocument = file;
+
+  if (selectedDocumentURL) {
+    URL.revokeObjectURL(selectedDocumentURL);
+  }
+
+  selectedDocumentURL = URL.createObjectURL(file);
+
+  documentInfo.innerText =
+    "Selected: " + file.name +
+    " | Size: " + (file.size / 1024).toFixed(2) + " KB";
+
+  documentDownload.style.display = "inline-block";
+});
+
+documentDownload.addEventListener("click", function() {
+  if (!selectedDocument || !selectedDocumentURL) {
+    alert("Please select a document first.");
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.href = selectedDocumentURL;
+  link.download = selectedDocument.name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+});
 const pdfInput = document.getElementById("pdfInput");
 const pdfInfo = document.getElementById("pdfInfo");
 const pdfDownload = document.getElementById("pdfDownload");
