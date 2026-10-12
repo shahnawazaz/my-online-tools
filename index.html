@@ -452,7 +452,65 @@ Close Tool
 /* AUDIO TOOL */
 /* PDF TOOL */
 /* DOCUMENT TOOL */
+/* TEXT TOOL */
+const textInput = document.getElementById("textInput");
+const textInfo = document.getElementById("textInfo");
+const copyTextTool = document.getElementById("copyTextTool");
+const downloadTextTool = document.getElementById("downloadTextTool");
+const clearTextTool = document.getElementById("clearTextTool");
 
+function updateTextInfo() {
+  const text = textInput.value;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  textInfo.innerText =
+    "Words: " + words + " | Characters: " + text.length;
+}
+
+textInput.addEventListener("input", updateTextInfo);
+
+copyTextTool.addEventListener("click", async function() {
+  if (!textInput.value) {
+    alert("Please enter some text first.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(textInput.value);
+    alert("Text copied successfully!");
+  } catch (error) {
+    textInput.select();
+    alert("Text selected. Long-press and choose Copy.");
+  }
+});
+
+downloadTextTool.addEventListener("click", function() {
+  if (!textInput.value) {
+    alert("Please enter some text first.");
+    return;
+  }
+
+  const blob = new Blob([textInput.value], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "my-text.txt";
+  link.click();
+
+  setTimeout(function() {
+    URL.revokeObjectURL(url);
+  }, 1000);
+});
+
+clearTextTool.addEventListener("click", function() {
+  textInput.value = "";
+  updateTextInfo();
+});
+
+updateTextInfo();
+/* END TEXT TOOL */
 const documentInput = document.getElementById("documentInput");
 const documentInfo = document.getElementById("documentInfo");
 const documentDownload = document.getElementById("documentDownload");
