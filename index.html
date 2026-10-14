@@ -388,7 +388,29 @@ Select an audio file to begin.
 
 </section>
 </section>
+<!-- TEXT TOOL -->
+<section id="textTool" class="tool">
 
+<h2>📝 Text Tool</h2>
+
+<label for="textInput">Enter or Paste Your Text</label>
+
+<textarea id="textInput"
+placeholder="Type or paste your text here..."
+style="width:100%; min-height:150px; padding:10px;"></textarea>
+
+<div class="info" id="textInfo">
+Words: 0 | Characters: 0
+</div>
+
+<div class="actions">
+<button id="copyTextTool">Copy Text</button>
+<button id="downloadTextTool">Download TXT</button>
+<button id="clearTextTool">Clear Text</button>
+<button class="close" onclick="closeTool('textTool')">Close Tool</button>
+</div>
+
+</section>
 <!-- PDF TOOL -->
 
 <section id="pdfTool" class="tool">
