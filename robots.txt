@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shahnawazaz.github.io/my-online-tools/sitemap.xml
