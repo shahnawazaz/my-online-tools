@@ -1187,5 +1187,79 @@ async function trimVideo(){
     <a href="privacy.html">Privacy Policy</a>
     <p>© 2026 My Online Tools</p>
 </footer>
+  <script>
+const calculatorCard = `
+<div class="card">
+    <h3>🧮 Basic Calculator</h3>
+    <p>Add, subtract, multiply and divide numbers easily.</p>
+    <button onclick="openTool('calculatorTool')">Open Calculator</button>
+</div>`;
+
+document.querySelector(".tools").insertAdjacentHTML("beforeend", calculatorCard);
+
+const calculatorSection = `
+<section id="calculatorTool" class="tool">
+    <h2>🧮 Basic Calculator</h2>
+    <p>Enter two numbers and select an operation.</p>
+
+    <div class="controls">
+        <div class="control">
+            <label for="calcNum1">First Number</label>
+            <input type="number" id="calcNum1" placeholder="Enter first number">
+        </div>
+
+        <div class="control">
+            <label for="calcNum2">Second Number</label>
+            <input type="number" id="calcNum2" placeholder="Enter second number">
+        </div>
+    </div>
+
+    <div class="actions">
+        <button type="button" onclick="calculateBasic('+')">Add (+)</button>
+        <button type="button" onclick="calculateBasic('-')">Subtract (-)</button>
+        <button type="button" onclick="calculateBasic('*')">Multiply (×)</button>
+        <button type="button" onclick="calculateBasic('/')">Divide (÷)</button>
+    </div>
+
+    <p id="calcResult" class="info">Your result will appear here.</p>
+
+    <button type="button" class="close" onclick="closeTool('calculatorTool')">
+        Close Calculator
+    </button>
+</section>`;
+
+document.querySelector(".container").insertAdjacentHTML("beforeend", calculatorSection);
+
+function calculateBasic(operator) {
+    const firstValue = document.getElementById("calcNum1").value;
+    const secondValue = document.getElementById("calcNum2").value;
+    const resultBox = document.getElementById("calcResult");
+
+    if (firstValue.trim() === "" || secondValue.trim() === "") {
+        resultBox.textContent = "Please enter both numbers.";
+        return;
+    }
+
+    const a = Number(firstValue);
+    const b = Number(secondValue);
+    let result;
+
+    if (operator === "+") {
+        result = a + b;
+    } else if (operator === "-") {
+        result = a - b;
+    } else if (operator === "*") {
+        result = a * b;
+    } else if (operator === "/") {
+        if (b === 0) {
+            resultBox.textContent = "Cannot divide by zero.";
+            return;
+        }
+        result = a / b;
+    }
+
+    resultBox.textContent = "Result: " + result;
+}
+  </script>
 </body>
 </html>
